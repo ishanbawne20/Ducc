@@ -42,6 +42,10 @@ config/name="Ducc"
 run/main_scene="res://UI/StartMenu.tscn"
 config/icon="res://icon.png"
 
+[display]
+
+window/size/resizable=false
+
 [input]
 
 ui_left={
