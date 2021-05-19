@@ -1,0 +1,143 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://Ship/Ship.tscn" type="PackedScene" id=1]
+[ext_resource path="res://main.gd" type="Script" id=2]
+[ext_resource path="res://Enemy_Env/Missiles.tscn" type="PackedScene" id=3]
+[ext_resource path="res://UI/heal_front.png" type="Texture" id=4]
+[ext_resource path="res://UI/heal_back.png" type="Texture" id=5]
+[ext_resource path="res://UI/Control.gd" type="Script" id=6]
+[ext_resource path="res://Enemy_Env/Obstacles/blue.png" type="Texture" id=7]
+[ext_resource path="res://Enemy_Env/Obstacles/red.png" type="Texture" id=8]
+[ext_resource path="res://Enemy_Env/Obstacles/yellow.png" type="Texture" id=9]
+[ext_resource path="res://Enemy_Env/Obstacles/green.png" type="Texture" id=10]
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 45.618, 44.3573 )
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 14.3224, 297.867 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 505.642, 14.708 )
+
+[node name="Main" type="Node2D"]
+script = ExtResource( 2 )
+Missile = ExtResource( 3 )
+
+[node name="Ship" parent="." instance=ExtResource( 1 )]
+position = Vector2( 488.412, 314.661 )
+scale = Vector2( 2, 2 )
+collision_layer = 3
+collision_mask = 0
+
+[node name="obstacles" type="StaticBody2D" parent="."]
+scale = Vector2( 0.7, 0.7 )
+collision_layer = 3
+collision_mask = 3
+
+[node name="red" type="Sprite" parent="obstacles"]
+position = Vector2( 776.295, 180.236 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 8 )
+
+[node name="blue" type="Sprite" parent="obstacles"]
+position = Vector2( 1208.07, 439.751 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 7 )
+
+[node name="green" type="Sprite" parent="obstacles"]
+position = Vector2( 208.94, 460.963 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 10 )
+
+[node name="yellow" type="Sprite" parent="obstacles"]
+position = Vector2( 774.477, 684.328 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 9 )
+
+[node name="red2" type="CollisionShape2D" parent="obstacles"]
+position = Vector2( 774.076, 180.441 )
+shape = SubResource( 3 )
+
+[node name="blue2" type="CollisionShape2D" parent="obstacles"]
+position = Vector2( 1208.79, 438.607 )
+shape = SubResource( 3 )
+
+[node name="yellow2" type="CollisionShape2D" parent="obstacles"]
+position = Vector2( 774.717, 685.388 )
+shape = SubResource( 3 )
+
+[node name="green2" type="CollisionShape2D" parent="obstacles"]
+position = Vector2( 209.317, 458.651 )
+shape = SubResource( 3 )
+
+[node name="walls" type="StaticBody2D" parent="."]
+
+[node name="wall1" type="CollisionShape2D" parent="walls"]
+position = Vector2( 14.6387, 302.416 )
+shape = SubResource( 1 )
+
+[node name="wall2" type="CollisionShape2D" parent="walls"]
+position = Vector2( 1010.64, 298.416 )
+shape = SubResource( 1 )
+
+[node name="wall4" type="CollisionShape2D" parent="walls"]
+position = Vector2( 506.22, 591.991 )
+shape = SubResource( 2 )
+
+[node name="wall3" type="CollisionShape2D" parent="walls"]
+position = Vector2( 506.22, 5.04538 )
+shape = SubResource( 2 )
+
+[node name="Missile_container" type="Node" parent="."]
+
+[node name="Missile_timer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="UI"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Score" type="RichTextLabel" parent="UI/Control"]
+margin_left = 50.0
+margin_top = 40.0
+margin_right = 125.0
+margin_bottom = 55.0
+rect_scale = Vector2( 3, 3 )
+text = "Score : 0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Score2" type="RichTextLabel" parent="UI/Control"]
+margin_left = 560.0
+margin_top = 40.0
+margin_right = 610.0
+margin_bottom = 55.0
+rect_scale = Vector2( 3, 3 )
+text = "Health :"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureProgress" type="TextureProgress" parent="UI/Control"]
+margin_left = 730.0
+margin_top = 45.0
+margin_right = 1835.0
+margin_bottom = 279.0
+rect_scale = Vector2( 0.2, 0.15 )
+value = 100.0
+texture_under = ExtResource( 5 )
+texture_progress = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="timeout" from="Missile_timer" to="." method="_on_Missile_timer_timeout"]
